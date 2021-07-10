@@ -7,19 +7,19 @@ CPU=:cpu=atmega328old
 SRC = $(wildcard *.ino)
 PROJECT = $(notdir $(CURDIR))
 
-TARGET = $(PROJECT).$(subst :,.,$(BOARD)).elf
+TARGET = $(PROJECT).ino.bin
 
 $(TARGET): $(SRC)
 	@rm -rf tmp
 	@mkdir -p tmp
-	@TMPDIR=$(PWD)/tmp arduino-cli compile --fqbn=$(BOARD)$(CPU)
+	@TMPDIR=$(PWD)/tmp arduino-cli compile --fqbn=$(BOARD)$(CPU) --output-dir=$(PWD)
 	@rm -rf tmp
 
 recompile: $(TARGET)
 
 upload:
 	@mkdir -p tmp
-	@TMPDIR=$(PWD)/tmp arduino-cli upload --fqbn=$(BOARD)$(CPU) -p $(PORT)
+	@TMPDIR=$(PWD)/tmp arduino-cli upload --fqbn=$(BOARD)$(CPU) -p $(PORT) --input-dir=$(PWD)
 	@rm -rf tmp
 
 serial:
